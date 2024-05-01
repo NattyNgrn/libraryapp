@@ -1,37 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App'; 
 import './index.css';
-import { ClerkProvider, RedirectToSignIn, SignIn, SignUp, SignedIn, SignedOut } from "@clerk/clerk-react";import { ClerkProvider } from '@clerk/clerk-react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { SignIn, SignUp } from "@clerk/clerk-react";
+import Home from './pages/Home';
+import Personal from './pages/Personal';
+import Profile from './pages/Profile';
+import RootLayout from './layouts/root-layout';
+import IndexPage from './pages';
 
-// Import your publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const router = createBrowserRouter([
+	{
+		element: <RootLayout />,
+		children: [
+			{ path: "/", element: <IndexPage /> },
+			{ path: "/Profile", element: <Profile /> },
+			{ path: "/sign-in/*", element: <SignIn /> },
+			{ path: "/sign-up/*", element: <SignUp /> },
+			{ path: "/Personal", element: <Personal />},
+			{ path: "/Home", element: <Home /> }
+		]
+	}
+]);
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key");
-}
-
-const root = ReactDOM.createRoot(document.getElementById('root'))
-
-const ClerkWithRoutes = () => {
-  const navigate = useNavigate()
-  return(
-    <ClerkProvider>
-      publishableKey={PUBLISHABLE_KEY}
-      navigate={(to) => navigate(to)}
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/sign-in/" element={<SignIn redirectUrl={'/protected'} routing="path" path="/sign-in" />}/>
-      </Routes>
-    </ClerkProvider>
-  )
-}
-
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ClerkWithRoutes/>
-        
-    </BrowserRouter>
-  </React.StrictMode>,
+ReactDOM.createRoot(document.getElementById('root')).render(
+	<React.StrictMode>
+		<RouterProvider router={router} />
+	</React.StrictMode>,
 );
