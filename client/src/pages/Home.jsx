@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { useAuth } from "@clerk/clerk-react"
 import {useNavigate } from "react-router-dom"
+import Catalogue from '../components/catalogue';
 
 function Home() {
 
-    const { userId, isLoaded } = useAuth()
-    const navigate = useNavigate()
+    const { userId, isLoaded } = useAuth();
+    const navigate = useNavigate();
 
     console.log('test', userId)
 
@@ -16,10 +17,10 @@ function Home() {
     }, [isLoaded, navigate, userId]);
 
     return (
-    <div>
-        <h1>Home</h1>
-    </div>
-    );
+        <div>
+            <Catalogue />
+        </div>
+    )
 }
 
 export default Home;
