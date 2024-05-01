@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { SignIn, SignUp } from "@clerk/clerk-react";
 import Home from './pages/Home';
 import Personal from './pages/Personal';
 import Profile from './pages/Profile';
 import RootLayout from './layouts/root-layout';
 import IndexPage from './pages';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 const router = createBrowserRouter([
 	{
@@ -15,10 +16,10 @@ const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <IndexPage /> },
 			{ path: "/Profile", element: <Profile /> },
-			{ path: "/sign-in/*", element: <SignIn /> },
-			{ path: "/sign-up/*", element: <SignUp /> },
 			{ path: "/Personal", element: <Personal />},
-			{ path: "/Home", element: <Home /> }
+			{ path: "/Home", element: <Home /> },
+			{ path: "/sign-in/*", element: <SignIn />},
+			{ path: "/sign-up/*", element: <SignUp />},
 		]
 	}
 ]);
