@@ -1,4 +1,5 @@
 import pg from 'pg';
+
 export const DB = new pg.Client({
     user: 'me',
     host: 'localhost',
@@ -8,7 +9,7 @@ export const DB = new pg.Client({
 });
 
 // action: "checkin" | "checkout" | "reserve" | "unreserve"
-export default function getUserActionQuery(userId, bookId, action) {
+export function getUserActionQuery(userId, bookId, action) {
     let arrayName = "", arrayAction = "", boolColumn = "", newBoolValue = "";
     switch(action) {
         case "checkin":

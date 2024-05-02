@@ -3,7 +3,8 @@ import pg from "pg";
 import express  from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { DB } from "./helpers.js";
+import { DB, getUserActionQuery } from "./helpers.js";
+
 const app = express();
 const port = 8219;
 
@@ -151,6 +152,39 @@ app.post("/unreservebook", async (req, res) => {
         await DB.query(bookQuery);
         console.log(`Actioned book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({error});
+    }
+});
+
+app.put("/checkadduser", async (req, res) => {
+    try {
+        const { id, name } = req.body;
+        const checkUserResult = await DB.query(
+            `SELECT * FROM users WHERE id = '${id}'`
+        );
+        console.log(checkUserResult.rowCount);
+        if (checkUserResult.rowCount === 0) {
+            await DB.query(
+                `INSERT INTO users (id, name) VALUES ('${id}', '${name}')` 
+            );
+        }
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({error});
+    }
+});
+
+app.get("/getbooksforuser/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const result = await DB.query(`SELECT checked from users WHERE id = '${id}'`);
+        const bookIds = result.rows[0].checked;
+        const booksResult = await DB.query(`SELECT * FROM books WHERE id IN (${bookIds})`);
+        res.send(booksResult.rows);
     } catch(error) {
         console.log(error);
         return res.status(400).json({error});
