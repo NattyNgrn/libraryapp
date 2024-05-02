@@ -4,7 +4,7 @@ import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './pages/Home';
 import Personal from './pages/Personal';
-import Profile from './pages/Profile';
+
 import RootLayout from './layouts/root-layout';
 import IndexPage from './pages';
 import SignIn from './pages/SignIn';
@@ -15,7 +15,6 @@ const router = createBrowserRouter([
 		element: <RootLayout />,
 		children: [
 			{ path: "/", element: <IndexPage /> },
-			{ path: "/Profile", element: <Profile /> },
 			{ path: "/Personal", element: <Personal />},
 			{ path: "/Home", element: <Home /> },
 			{ path: "/sign-in/*", element: <SignIn />},
