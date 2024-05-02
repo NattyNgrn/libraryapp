@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Modal } from "flowbite-react";
-import { useAuth } from "@clerk/clerk-react" 
+import { useAuth } from "@clerk/clerk-react";
 
-function Popup({book, showPopup, setShowPopup}) {
+function Popup({book, personalMode, showPopup, setShowPopup}) {
 
     const { userId, isLoaded } = useAuth();
 
@@ -11,26 +11,36 @@ function Popup({book, showPopup, setShowPopup}) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(date).toLocaleDateString('en-US', options);
     };
+
     const checkIn = () => {
-        fetch('http://localhost:8219/checkinbook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userid: userId, bookid: book.id })
-        });
+        if (isLoaded) {
+            fetch('http://localhost:8219/checkinbook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, bookId: book.id })
+            })
+            window.location.reload();
+        }
     }
     const checkOut = () => {
-        fetch('http://localhost:8219/checkoutbook', {
+        if (isLoaded) {
+            fetch('http://localhost:8219/checkoutbook', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userid: userId, bookid: book.id })
-        });
+            body: JSON.stringify({ userId: userId, bookId: book.id })
+            })
+            window.location.reload();
+        }
     }
     const reserve = () => {
-        fetch('http://localhost:8219/reservebook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userid: userId, bookid: book.id })
-        });
+        if (isLoaded) {
+            fetch('http://localhost:8219/reservebook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, bookId: book.id })
+            });
+            window.location.reload();
+        }
     }
 
     return (
@@ -44,14 +54,31 @@ function Popup({book, showPopup, setShowPopup}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button onClick={checkIn} className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>Check In</button>
-                <button onClick={checkOut} className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>Check Out</button>
-                <button onClick={reserve} className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>Reserve</button>
+                {personalMode
+                    ? <button 
+                        disabled={!book.borrowed}
+                        onClick={checkIn}
+                        className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                        Check In
+                    </button>
+                    : <span>
+                        <button
+                            disabled={book.borrowed}
+                            onClick={checkOut}
+                            className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                            Check Out
+                        </button>
+                        <button
+                            disabled={book.reserved}
+                            onClick={reserve}
+                            className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                            Reserve
+                        </button>
+                    </span>
+                }
             </Modal.Footer>
         </Modal>
     );
-
 }
 
 export default Popup;
-

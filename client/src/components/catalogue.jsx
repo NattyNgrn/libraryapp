@@ -31,7 +31,7 @@ export default function Catalogue({books, personalMode}) {
 
     return (
         <div>
-            <form>
+            <form className="m-4">
                 <label className="text-black text-2xl" >Search by title: <input type='text' className="form-input rounded text-black" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}></input></label>
                 <label className="text-black text-2xl" >Search by author: <input type='text' className="form-input rounded text-black" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)}></input></label>
 
@@ -57,11 +57,11 @@ export default function Catalogue({books, personalMode}) {
                     .filter(filterTitle).filter(filterAuthor)
                     .filter(filterAvailableBooks).filter(filterReservableBooks)
                     .map(
-                        book => <BookCard book={book} setPopupBook={setPopupBook} setShowPopup={setShowPopup}/>
+                        book => <BookCard key={book.id} book={book} setPopupBook={setPopupBook} setShowPopup={setShowPopup}/>
                     )
                 }
             </div>
-            <Popup book={popupBook} showPopup={showPopup} setShowPopup={setShowPopup}/>
+            <Popup book={popupBook} personalMode={personalMode} showPopup={showPopup} setShowPopup={setShowPopup}/>
         </div>
     );
 }

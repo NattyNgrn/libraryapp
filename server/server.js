@@ -1,5 +1,4 @@
 
-import pg from "pg";
 import express  from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -30,7 +29,6 @@ app.get("/books", async (req, res) => {
     }
 });
 
-//write a post method to add a book
 app.post("/addbook", async (req, res) => {
     try {
         const { title, author, year } = req.body;
@@ -43,12 +41,11 @@ app.post("/addbook", async (req, res) => {
     }
 });
 
-//write a delete method to delete a book
 app.delete("/deletebook/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await DB.query("DELETE FROM books WHERE id = $1 RETURNING *", [id]);
-        console.log(`Deleted book: ${result.rows[0].title}`);
+        await DB.query(`DELETE FROM books WHERE id = ${id}`);
+        console.log(`Deleted book: ${id}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -56,13 +53,14 @@ app.delete("/deletebook/:id", async (req, res) => {
     }
 });
 
-//write a put method to update a book
 app.put("/updatebook/:id", async (req, res) => {
     try {
         const id = req.params.id;
         const { title, author, year } = req.body;
-        const result = await DB.query("UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4 RETURNING *", [title, author, year, id]);
-        console.log(`Updated book: ${result.rows[0].title}`);
+        const result = await DB.query(
+            "UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4",
+            [title, author, year, id]
+        );
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -102,13 +100,13 @@ app.post("/adduserifnoexist", async (req, res) => {
     }
 });
 
-app.delete("/checkinbook", async (req, res) => {
+app.post("/checkinbook", async (req, res) => {
     try {
         const { userId, bookId } = req.body;
-        const { userQuery, bookQuery } = getUserActionQuery(userId, bookId, "checkin");
-        await DB.query(userQuery);
-        await DB.query(bookQuery);
-        console.log(`Actioned book with id ${bookId} from user with id ${userId}`);
+        const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "checkin");
+        await DB.query(usersQuery);
+        await DB.query(booksQuery);
+        console.log(`Checking in book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -119,10 +117,10 @@ app.delete("/checkinbook", async (req, res) => {
 app.post("/checkoutbook", async (req, res) => {
     try {
         const { userId, bookId } = req.body;
-        const { userQuery, bookQuery } = getUserActionQuery(userId, bookId, "checkout");
-        await DB.query(userQuery);
-        await DB.query(bookQuery);
-        console.log(`Actioned book with id ${bookId} from user with id ${userId}`);
+        const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "checkout");
+        await DB.query(usersQuery);
+        await DB.query(booksQuery);
+        console.log(`Checking out book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -133,10 +131,10 @@ app.post("/checkoutbook", async (req, res) => {
 app.post("/reservebook", async (req, res) => {
     try {
         const { userId, bookId } = req.body;
-        const { userQuery, bookQuery } = getUserActionQuery(userId, bookId, "reserve");
-        await DB.query(userQuery);
-        await DB.query(bookQuery);
-        console.log(`Actioned book with id ${bookId} from user with id ${userId}`);
+        const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "reserve");
+        await DB.query(usersQuery);
+        await DB.query(booksQuery);
+        console.log(`Reserving book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -147,10 +145,10 @@ app.post("/reservebook", async (req, res) => {
 app.post("/unreservebook", async (req, res) => {
     try {
         const { userId, bookId } = req.body;
-        const { userQuery, bookQuery } = getUserActionQuery(userId, bookId, "unreserve");
-        await DB.query(userQuery);
-        await DB.query(bookQuery);
-        console.log(`Actioned book with id ${bookId} from user with id ${userId}`);
+        const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "unreserve");
+        await DB.query(usersQuery);
+        await DB.query(booksQuery);
+        console.log(`Unreserving book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -180,11 +178,14 @@ app.put("/checkadduser", async (req, res) => {
 app.get("/getbooksforuser/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id);
         const result = await DB.query(`SELECT checked from users WHERE id = '${id}'`);
         const bookIds = result.rows[0].checked;
-        const booksResult = await DB.query(`SELECT * FROM books WHERE id IN (${bookIds})`);
-        res.send(booksResult.rows);
+        if (bookIds.length > 0) {
+            const booksResult = await DB.query(`SELECT * FROM books WHERE id IN (${bookIds})`);
+            res.send(booksResult.rows);
+        } else {
+            res.send([]);
+        }
     } catch(error) {
         console.log(error);
         return res.status(400).json({error});

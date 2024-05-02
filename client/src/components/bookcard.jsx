@@ -11,6 +11,7 @@ function BookCard({book, setPopupBook, setShowPopup}) {
                 <img onClick={setPopupStuff} className="card-img-top" src={book.image} alt={book.title} />
                 <div className="card-body">
                     <h5 className="card-title">{book.title}</h5>
+                    <h5 className="card-title">{book.author}</h5>
                 </div>
             </div>
         </div>

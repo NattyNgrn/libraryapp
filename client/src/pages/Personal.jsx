@@ -7,8 +7,6 @@ function Personal() {
     const { userId, isLoaded } = useAuth();
     const navigate = useNavigate();
 
-    console.log('test', userId)
-
     useEffect(() => {
         if (isLoaded && !userId) {
             navigate("/sign-in")

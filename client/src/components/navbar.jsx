@@ -7,14 +7,14 @@ import {useNavigate } from "react-router-dom"
 
 function Navbar(){
 
-    const { userId, isLoaded } = useAuth()
-    const navigate = useNavigate()
+    const { userId, isLoaded } = useAuth();
+    const navigate = useNavigate();
 
     console.log('test', userId)
 
     React.useEffect(() => {
         if (isLoaded && !userId) {
-            navigate("/sign-in")
+            navigate("/sign-in");
         }
     }, [isLoaded, navigate, userId]);
 
@@ -28,12 +28,14 @@ function Navbar(){
                 <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/Personal">Personal Library</Link></li></button>
                 </ul>
             </nav>
-            <SignedOut>
-                <SignInButton />
-            </SignedOut>
-            <SignedIn>
-                <UserButton />
-            </SignedIn>
+            <div className="scale-150 m-4">
+                <SignedOut>
+                    <SignInButton />
+                </SignedOut>
+                <SignedIn>
+                    <UserButton />
+                </SignedIn>
+            </div>
             </div>
         </div>
     )

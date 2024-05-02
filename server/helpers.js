@@ -14,13 +14,13 @@ export function getUserActionQuery(userId, bookId, action) {
     switch(action) {
         case "checkin":
             arrayName = "checked";
-            arrayAction = "array_append";
+            arrayAction = "array_remove";
             boolColumn = "borrowed";
             newBoolValue = "false";
             break;
         case "checkout":
             arrayName = "checked";
-            arrayAction = "array_remove";
+            arrayAction = "array_append";
             boolColumn = "borrowed";
             newBoolValue = "true";
             break;
@@ -43,7 +43,7 @@ export function getUserActionQuery(userId, bookId, action) {
         usersQuery:`
             UPDATE users 
             SET ${arrayName} = ${arrayAction}(${arrayName}, ${bookId})
-            WHERE id = ${userId}
+            WHERE id = '${userId}'
         `,
         booksQuery: `
             UPDATE books

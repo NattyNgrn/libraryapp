@@ -8,8 +8,6 @@ function Home() {
     const { user, isLoaded } = useUser();
     const navigate = useNavigate();
 
-    console.log('test', user);
-
     useEffect(() => {
         if (isLoaded && !user.id) {
             navigate("/sign-in")
