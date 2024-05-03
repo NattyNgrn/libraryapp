@@ -2,7 +2,7 @@
 import { Modal } from "flowbite-react";
 import { useAuth } from "@clerk/clerk-react";
 
-function Popup({book, personalMode, showPopup, setShowPopup}) {
+function Popup({book, personalMode, adminMode, showPopup, setShowPopup}) {
 
     const { userId, isLoaded } = useAuth();
 
@@ -25,9 +25,9 @@ function Popup({book, personalMode, showPopup, setShowPopup}) {
     const checkOut = () => {
         if (isLoaded) {
             fetch('http://localhost:8219/checkoutbook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: userId, bookId: book.id })
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, bookId: book.id })
             })
             window.location.reload();
         }
@@ -52,6 +52,14 @@ function Popup({book, personalMode, showPopup, setShowPopup}) {
         }
     }
 
+    const deleteBook = () => {
+        fetch(`http://localhost:8219/deletebook/${book.id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        window.location.reload();
+    }
+
     return (
         <Modal dismissible show={showPopup} onClose={() => setShowPopup(false)}>
             <Modal.Header>{book.title} { !personalMode ? "-" + getBookStatus() : ""}</Modal.Header>
@@ -72,7 +80,7 @@ function Popup({book, personalMode, showPopup, setShowPopup}) {
                     </button>
                     : <span></span>
                 }
-                {!book.borrowed && !book.reserved
+                {!adminMode && !book.borrowed && !book.reserved
                     ? <button
                         onClick={checkOut}
                         className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
@@ -80,11 +88,19 @@ function Popup({book, personalMode, showPopup, setShowPopup}) {
                     </button>
                     : <span></span>
                 }
-                {!book.reserved
+                {!adminMode && !book.reserved
                     ? <button
                         onClick={reserve}
                         className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
                         Reserve
+                    </button>
+                    : <span></span>
+                }
+                {adminMode
+                    ? <button
+                        onClick={deleteBook}
+                        className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                        Delete
                     </button>
                     : <span></span>
                 }

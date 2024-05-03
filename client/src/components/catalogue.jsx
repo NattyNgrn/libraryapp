@@ -3,13 +3,15 @@
 import { useState } from "react";
 import Popup from "./popup";
 import BookCard from "./bookcard";
+import AddBookPopup from "./addBookPopup";
 
-export default function Catalogue({books, personalMode}) {
+export default function Catalogue({books, personalMode, adminMode}) {
     const [showPopup, setShowPopup] = useState(false);
     const [popupBook, setPopupBook] = useState({});
     const [searchTitle, setSearchTitle] = useState('');
     const [searchAuthor, setSearchAuthor] = useState('');
     const [filterAvailable, setFilterAvailable] = useState(false);
+    const [showAddBookPopup, setShowAddBookPopup] = useState(false);
 
     const filterTitle = (book) => {
         if (searchTitle == '') return true;
@@ -29,15 +31,25 @@ export default function Catalogue({books, personalMode}) {
             <form className="m-4">
                 <label className="text-black text-2xl" >Search by title: <input type='text' className="form-input rounded text-black" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}></input></label>
                 <label className="text-black text-2xl" >Search by author: <input type='text' className="form-input rounded text-black" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)}></input></label>
-
-                { personalMode ? <span></span>
-                    : <button 
-                        onClick={(e) => e.preventDefault() || setFilterAvailable(!filterAvailable)}
-                        className={filterAvailable
-                            ? "hover:bg-red-500 p-px px-2 rounded mx-2 bg-red-500 text-xlg"
-                            : "hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg"}>
-                        Available
-                    </button>
+                { 
+                    personalMode 
+                        ? <span></span>
+                        : <button 
+                            onClick={(e) => e.preventDefault() || setFilterAvailable(!filterAvailable)}
+                            className={filterAvailable
+                                ? "hover:bg-red-500 p-px px-2 rounded mx-2 bg-red-500 text-xlg"
+                                : "hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg"}>
+                            Available
+                        </button>
+                }
+                {
+                    adminMode
+                        ? <button 
+                            onClick={(e) => e.preventDefault() || setShowAddBookPopup(true)}
+                            className="hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg">
+                            Add Book
+                        </button>
+                        : <span></span>
                 }
             </form>
             <div className="grid-cols-1 sm:grid md:grid-cols-5 ">
@@ -50,7 +62,8 @@ export default function Catalogue({books, personalMode}) {
                     )
                 }
             </div>
-            <Popup book={popupBook} personalMode={personalMode} showPopup={showPopup} setShowPopup={setShowPopup}/>
+            <AddBookPopup showAddBookPopup={showAddBookPopup} setShowAddBookPopup={setShowAddBookPopup} />
+            <Popup book={popupBook} adminMode={adminMode} personalMode={personalMode} showPopup={showPopup} setShowPopup={setShowPopup}/>
         </div>
     );
 }

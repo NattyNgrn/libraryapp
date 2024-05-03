@@ -1,22 +1,17 @@
-import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react"
-import {useNavigate } from "react-router-dom"
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '@clerk/clerk-react';
 import Catalogue from '../components/catalogue';
 
-function Home() {
-
+export default function Admin() {
     const { user, isLoaded } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isLoaded && !user.id) {
             navigate("/sign-in")
-        } else if (isLoaded && user.id) {
-            fetch(`http://localhost:8219/checkadduser`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: user.id, name: user.fullName })
-            });
+        } else if (isLoaded && user.id && user.publicMetadata?.role !== 'admin') {
+            navigate("/home");
         }
     }, [isLoaded, navigate, user]);
 
@@ -32,9 +27,7 @@ function Home() {
     return (
         <div>
             <h1>Library Catalogue</h1>
-            <Catalogue books={books} personalMode={false} adminMode={false} />
+            <Catalogue books={books} personalMode={false} adminMode={true} />
         </div>
     );
 }
-
-export default Home;

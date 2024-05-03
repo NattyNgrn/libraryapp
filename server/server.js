@@ -29,11 +29,14 @@ app.get("/books", async (req, res) => {
     }
 });
 
-app.post("/addbook", async (req, res) => {
+app.put("/addbook", async (req, res) => {
     try {
-        const { title, author, year } = req.body;
-        const result = await DB.query("INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING *", [title, author, year]);
-        console.log(`Added book: ${result.rows[0].title}`);
+        const { title, author, date, description, image } = req.body;
+        await DB.query(
+            "INSERT INTO books (title, author, date, description, image) VALUES ($1, $2, $3, $4, $5)",
+            [title, author, date, description, image]
+        );
+        console.log(`Added book ${title}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -57,7 +60,7 @@ app.put("/updatebook/:id", async (req, res) => {
     try {
         const id = req.params.id;
         const { title, author, year } = req.body;
-        const result = await DB.query(
+        await DB.query(
             "UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4",
             [title, author, year, id]
         );
@@ -165,8 +168,8 @@ app.put("/checkadduser", async (req, res) => {
         const checkUserResult = await DB.query(
             `SELECT * FROM users WHERE id = '${id}'`
         );
-        console.log(checkUserResult.rowCount);
         if (checkUserResult.rowCount === 0) {
+            console.log("new user");
             await DB.query(
                 `INSERT INTO users (id, name) VALUES ('${id}', '${name}')` 
             );
