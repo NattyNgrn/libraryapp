@@ -3,6 +3,7 @@ import express  from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { DB, getUserActionQuery } from "./helpers.js";
+import { config } from "dotenv";
 
 const app = express();
 const port = 8219;
@@ -13,6 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 DB.connect();
+
+config();
+const CLERK_API_KEY = process.env.CLERK_API_KEY;
 
 app.get("/", (req, res) => {
     res.json("IT WORKS");
@@ -59,10 +63,10 @@ app.delete("/deletebook/:id", async (req, res) => {
 app.put("/updatebook/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const { title, author, year } = req.body;
+        const { title, author, date, description, image } = req.body;
         await DB.query(
-            "UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4",
-            [title, author, year, id]
+            "UPDATE books SET title = $1, author = $2, date = $3, description = $4, image = $5 WHERE id = $6",
+            [title, author, date, description, image, id]
         );
         res.sendStatus(200);
     } catch(error) {
@@ -192,6 +196,63 @@ app.get("/getbooksforuser/:id", async (req, res) => {
         } else {
             res.send([]);
         }
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({error});
+    }
+});
+
+app.get("/getusers", async (req, res) => {
+    try {
+        const response = await fetch("https://api.clerk.com/v1/users",{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${CLERK_API_KEY}`
+            },
+        });
+        const users = await response.json();
+        res.send(users);
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({error});
+    }
+});
+
+app.delete("/deleteuser/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        await DB.query(`DELETE FROM users WHERE id = '${id}'`);
+        await fetch(`https://api.clerk.com/v1/users/${id}`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${CLERK_API_KEY}`
+            },
+        });
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({error});
+    }
+});
+
+app.post("/makeadmin/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        await fetch(`https://api.clerk.com/v1/users/${id}`,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${CLERK_API_KEY}`
+            },
+            body: JSON.stringify({
+                "public_metadata": {
+                    "role": "admin"
+                }
+            })
+        });
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
         return res.status(400).json({error});

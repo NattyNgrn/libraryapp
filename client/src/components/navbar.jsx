@@ -30,6 +30,10 @@ function Navbar(){
                     user?.publicMetadata?.role === 'admin' &&
                     <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/Admin">Admin</Link></li></button>
                     }
+                    {
+                    user?.publicMetadata?.role === 'admin' &&
+                    <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/AdminUsers">Admin Users</Link></li></button>
+                    }
                     </ul>
                 </nav>
                 <div className="scale-150 m-4">

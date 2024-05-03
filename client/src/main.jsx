@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './pages/Home';
 import Personal from './pages/Personal';
 import Admin from './pages/Admin';
+import AdminUsers from './pages/AdminUsers';
 
 import RootLayout from './layouts/root-layout';
 import IndexPage from './pages';
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
 			{ path: "/sign-in/*", element: <SignIn />},
 			{ path: "/sign-up/*", element: <SignUp />},
 			{ path: "/Admin", element: <Admin />},
+			{ path: "/AdminUsers", element: <AdminUsers />},
 		]
 	}
 ]);

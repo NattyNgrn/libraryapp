@@ -4,6 +4,7 @@ import { useState } from "react";
 import Popup from "./popup";
 import BookCard from "./bookcard";
 import AddBookPopup from "./addBookPopup";
+import UpdateBookPopup from "./updateBookPopup";
 
 export default function Catalogue({books, personalMode, adminMode}) {
     const [showPopup, setShowPopup] = useState(false);
@@ -12,6 +13,7 @@ export default function Catalogue({books, personalMode, adminMode}) {
     const [searchAuthor, setSearchAuthor] = useState('');
     const [filterAvailable, setFilterAvailable] = useState(false);
     const [showAddBookPopup, setShowAddBookPopup] = useState(false);
+    const [showUpdateBookPopup, setShowUpdateBookPopup] = useState(false);
 
     const filterTitle = (book) => {
         if (searchTitle == '') return true;
@@ -24,6 +26,17 @@ export default function Catalogue({books, personalMode, adminMode}) {
     const filterAvailableBooks = (book) => {
         if (filterAvailable) return !book.borrowed || !book.reserved;
         else return true;
+    }
+    const sortBooks = (a, b) => {
+        const nameA = a.title.toUpperCase();
+        const nameB = b.title.toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
     }
 
     return (
@@ -57,13 +70,15 @@ export default function Catalogue({books, personalMode, adminMode}) {
                     .filter(filterTitle)
                     .filter(filterAuthor)
                     .filter(filterAvailableBooks)
+                    .sort(sortBooks)
                     .map(
                         book => <BookCard key={book.id} book={book} setPopupBook={setPopupBook} setShowPopup={setShowPopup}/>
                     )
                 }
             </div>
             <AddBookPopup showAddBookPopup={showAddBookPopup} setShowAddBookPopup={setShowAddBookPopup} />
-            <Popup book={popupBook} adminMode={adminMode} personalMode={personalMode} showPopup={showPopup} setShowPopup={setShowPopup}/>
+            <Popup book={popupBook} adminMode={adminMode} personalMode={personalMode} showPopup={showPopup} setShowPopup={setShowPopup} setShowUpdateBookPopup={setShowUpdateBookPopup}/>
+            <UpdateBookPopup book={popupBook} showUpdateBookPopup={showUpdateBookPopup} setShowUpdateBookPopup={setShowUpdateBookPopup} />
         </div>
     );
 }

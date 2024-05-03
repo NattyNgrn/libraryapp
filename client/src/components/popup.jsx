@@ -2,7 +2,7 @@
 import { Modal } from "flowbite-react";
 import { useAuth } from "@clerk/clerk-react";
 
-function Popup({book, personalMode, adminMode, showPopup, setShowPopup}) {
+function Popup({book, personalMode, adminMode, showPopup, setShowPopup, setShowUpdateBookPopup}) {
 
     const { userId, isLoaded } = useAuth();
 
@@ -62,7 +62,7 @@ function Popup({book, personalMode, adminMode, showPopup, setShowPopup}) {
 
     return (
         <Modal dismissible show={showPopup} onClose={() => setShowPopup(false)}>
-            <Modal.Header>{book.title} { !personalMode ? "-" + getBookStatus() : ""}</Modal.Header>
+            <Modal.Header>{book.title} {!personalMode && !adminMode ? "- " + getBookStatus() : ""}</Modal.Header>
             <Modal.Body>
                 <img src={book.image} />
                 <div className="space-y-6">
@@ -93,6 +93,14 @@ function Popup({book, personalMode, adminMode, showPopup, setShowPopup}) {
                         onClick={reserve}
                         className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
                         Reserve
+                    </button>
+                    : <span></span>
+                }
+                {adminMode
+                    ? <button
+                        onClick={()=>{ setShowUpdateBookPopup(true); setShowPopup(false); }}
+                        className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                        Update
                     </button>
                     : <span></span>
                 }
