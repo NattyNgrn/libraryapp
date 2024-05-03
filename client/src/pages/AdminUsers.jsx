@@ -39,78 +39,65 @@ export default function AdminUsers() {
         window.location.reload();
     }
 
-    return (
-        <div>
-            <h1 className="text-4xl">Admin Users</h1>
-            <div className="flex flex-row justify-between p-4 border-b-2"></div>
-            <table className='width-100'>
-                <thead>
-                <tr className="flex flex-row justify-between p-4 border-b-2">
-                    <th className="py-2">ID</th>
-                    <th className="py-2">First Name</th>
-                    <th className="py-2">Last Name</th>
-                    <th className="py-2">Role</th>
-                    <th className="py-2">Delete</th>
-                    <th className="py-2">Make Admin</th>
+    return ( // table from flowbite
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" className="px-6 py-3">
+                        ID
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        First Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        Last Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        Role
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        <span className="sr-only">Delete</span>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        <span className="sr-only">Make Admin</span>
+                    </th>
                 </tr>
-                </thead>
-                <tbody>
-                { users.map((user) =>
-                    <tr key={user.id} className="flex flex-row justify-between p-4 border-b-2">
-                        <td className="py-2">{user.id}</td>
-                        <td className="py-2">{user.first_name}</td>
-                        <td className="py-2">{user.last_name}</td>
-                        <td className="py-2">{user.public_metadata?.role === "admin" ? "Admin" : "User"}</td>
-                        <td className="py-2"><button
+            </thead>
+            <tbody>
+            {users.map((user) => (
+                <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td className="px-6 py-4">
+                        {user.id}
+                    </td>
+                    <td className="px-6 py-4">
+                        {user.first_name}
+                    </td>
+                    <td className="px-6 py-4">
+                        {user.last_name}
+                    </td>
+                    <td className="px-6 py-4">
+                        {user.public_metadata?.role === "admin" ? "Admin" : "User"}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                        <button
                             className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-purple-100 text-base'
                             onClick={() => deleteUser(user)}>
-                                Delete
-                        </button></td>
-                        <td className="py-2">{
-                            user.public_metadata?.role !== "admin"
-                            && <button 
-                                className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'
-                                onClick={() => makeAdmin(user)}>
-                                    Make Admin
-                            </button>
-                        }</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-        </div>
+                            Delete
+                        </button>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                        <button
+                            className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-purple-100 text-base'
+                            onClick={() => makeAdmin(user)}>
+                            Make Admin
+                        </button>
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    </div>
     );
 
 }
-
-
-//<table className="w-full">
-    {/* <thead>
-        <tr className="border-b">
-            <th className="py-2">ID</th>
-            <th className="py-2">First Name</th>
-            <th className="py-2">Last Name</th>
-            <th className="py-2">Role</th>
-            <th className="py-2">Delete</th>
-            <th className="py-2">Make Admin</th>
-        </tr>
-    </thead>
-    <tbody>
-        {users.map((user) => (
-            <tr key={user.id} className="border-b">
-                <td className="py-2">{user.id}</td>
-                <td className="py-2">{user.first_name}</td>
-                <td className="py-2">{user.last_name}</td>
-                <td className="py-2">{user.public_metadata?.role === "admin" ? "Admin" : "User"}</td>
-                <td className="py-2">
-                    <button onClick={() => deleteUser(user)}>Delete</button>
-                </td>
-                {user.public_metadata?.role !== "admin" && (
-                    <td className="py-2">
-                        <button onClick={() => makeAdmin(user)}>Make Admin</button>
-                    </td>
-                )}
-            </tr>
-        ))}
-    </tbody>
-</table> */}
