@@ -31,6 +31,7 @@ function Home() {
 
     return (
         <div>
+            <h1>Library Catalogue</h1>
             <Catalogue books={books} />
         </div>
     );

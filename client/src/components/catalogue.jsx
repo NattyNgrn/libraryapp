@@ -10,7 +10,6 @@ export default function Catalogue({books, personalMode}) {
     const [searchTitle, setSearchTitle] = useState('');
     const [searchAuthor, setSearchAuthor] = useState('');
     const [filterAvailable, setFilterAvailable] = useState(false);
-    const [filterReservable, setFilterReservable] = useState(false);
 
     const filterTitle = (book) => {
         if (searchTitle == '') return true;
@@ -21,11 +20,7 @@ export default function Catalogue({books, personalMode}) {
         else return book.author.toLowerCase().includes(searchAuthor.toLowerCase());
     }
     const filterAvailableBooks = (book) => {
-        if (filterAvailable) return !book.borrowed;
-        else return true;
-    }
-    const filterReservableBooks = (book) => {
-        if (filterReservable) return !book.reserved;
+        if (filterAvailable) return !book.borrowed || !book.reserved;
         else return true;
     }
 
@@ -36,26 +31,20 @@ export default function Catalogue({books, personalMode}) {
                 <label className="text-black text-2xl" >Search by author: <input type='text' className="form-input rounded text-black" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)}></input></label>
 
                 { personalMode ? <span></span>
-                    : <span><button 
+                    : <button 
                         onClick={(e) => e.preventDefault() || setFilterAvailable(!filterAvailable)}
                         className={filterAvailable
-                            ? "hover:bg-red-200 p-px px-2 rounded mx-2 bg-red-800 text-xlg"
-                            : "hover:bg-red-200 p-px px-2 rounded mx-2 bg-white text-xlg"}>
+                            ? "hover:bg-red-500 p-px px-2 rounded mx-2 bg-red-500 text-xlg"
+                            : "hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg"}>
                         Available
                     </button>
-                    <button
-                        onClick={(e) => e.preventDefault() || setFilterReservable(!filterReservable)}
-                        className={filterReservable
-                            ? "hover:bg-red-200 p-px px-2 rounded mx-2 bg-red-800 text-xlg"
-                            : "hover:bg-red-200 p-px px-2 rounded mx-2 bg-white text-xlg"}>
-                        Reservable
-                    </button></span>
                 }
             </form>
             <div className="grid-cols-1 sm:grid md:grid-cols-5 ">
                 {books
-                    .filter(filterTitle).filter(filterAuthor)
-                    .filter(filterAvailableBooks).filter(filterReservableBooks)
+                    .filter(filterTitle)
+                    .filter(filterAuthor)
+                    .filter(filterAvailableBooks)
                     .map(
                         book => <BookCard key={book.id} book={book} setPopupBook={setPopupBook} setShowPopup={setShowPopup}/>
                     )
