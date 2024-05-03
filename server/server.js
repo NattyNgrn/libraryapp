@@ -86,27 +86,6 @@ app.get("/users", async (req, res) => {
     }
 });
 
-app.post("/adduserifnoexist", async (req, res) => {
-    try {
-        const { id, name, email } = req.body;
-        const checkUserResult = await DB.query(
-            "SELECT * FROM users WHERE id = $1",
-            [id]
-        );
-        if (checkUserResult.rowCount === 0) {
-            const addUserResult = await DB.query(
-                "INSERT INTO users (id, name, email) VALUES ($1, $2, $3) RETURNING *", 
-                [id, name, email]
-            );
-            console.log(`Added user: ${addUserResult.rows[0].name}`);
-        }
-        res.sendStatus(200);
-    } catch(error) {
-        console.log(error);
-        return res.status(400).json({error});
-    }
-});
-
 app.post("/checkinbook", async (req, res) => {
     try {
         const { userId, bookId } = req.body;

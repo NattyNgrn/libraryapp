@@ -41,7 +41,7 @@ export function getUserActionQuery(userId, bookId, action) {
     }
     return {
         usersQuery:`
-            UPDATE users 
+            UPDATE users
             SET ${arrayName} = ${arrayAction}(${arrayName}, ${bookId})
             WHERE id = '${userId}'
         `,
