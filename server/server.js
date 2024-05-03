@@ -107,6 +107,22 @@ app.post("/checkinbook", async (req, res) => {
         await DB.query(usersQuery);
         await DB.query(booksQuery);
         console.log(`Checking in book with id ${bookId} from user with id ${userId}`);
+        const reservedBook = await DB.query(`SELECT reserved, userReserved FROM books WHERE id = ${bookId}`);
+        const {reserved, userreserved} = reservedBook.rows[0];
+        console.log("checked in book, checking out based on ", reserved, userreserved);
+        if (reserved) {
+            {
+                const { usersQuery, booksQuery } = getUserActionQuery(userreserved, bookId, "checkout");
+                await DB.query(usersQuery);
+                await DB.query(booksQuery);
+            }
+            {
+                const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "unreserve");
+                await DB.query(usersQuery);
+                await DB.query(booksQuery);
+            }
+        }
+        
         res.sendStatus(200);
     } catch(error) {
         console.log(error);
@@ -134,21 +150,8 @@ app.post("/reservebook", async (req, res) => {
         const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "reserve");
         await DB.query(usersQuery);
         await DB.query(booksQuery);
+        await DB.query(`UPDATE books SET userReserved = '${userId}' WHERE id = ${bookId}`);
         console.log(`Reserving book with id ${bookId} from user with id ${userId}`);
-        res.sendStatus(200);
-    } catch(error) {
-        console.log(error);
-        return res.status(400).json({error});
-    }
-});
-
-app.post("/unreservebook", async (req, res) => {
-    try {
-        const { userId, bookId } = req.body;
-        const { usersQuery, booksQuery } = getUserActionQuery(userId, bookId, "unreserve");
-        await DB.query(usersQuery);
-        await DB.query(booksQuery);
-        console.log(`Unreserving book with id ${bookId} from user with id ${userId}`);
         res.sendStatus(200);
     } catch(error) {
         console.log(error);

@@ -42,39 +42,51 @@ function Popup({book, personalMode, showPopup, setShowPopup}) {
             window.location.reload();
         }
     }
+    const getBookStatus = () => {
+        if (book.reserved) {
+            return `Checked out and Reserved Already :(`;
+        } else if (book.borrowed) {
+            return `Checked Out, but available to reserve!`;
+        } else {
+            return 'Available to checkout!';
+        }
+    }
 
     return (
         <Modal dismissible show={showPopup} onClose={() => setShowPopup(false)}>
-            <Modal.Header>{book.title}</Modal.Header>
+            <Modal.Header>{book.title} { !personalMode ? "-" + getBookStatus() : ""}</Modal.Header>
             <Modal.Body>
                 <img src={book.image} />
                 <div className="space-y-6">
-                    <p>Author: {book.author}</p>
-                    <p>Date Published: {formatDate(book.date)}</p>
+                    <h3>Author: {book.author}</h3>
+                    <h3>Date Published: {formatDate(book.date)}</h3>
+                    <h3>{getBookStatus()}</h3>
                 </div>
             </Modal.Body>
             <Modal.Footer>
                 {personalMode
                     ? <button 
-                        disabled={!book.borrowed}
                         onClick={checkIn}
                         className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
                         Check In
                     </button>
-                    : <span>
-                        <button
-                            disabled={book.borrowed}
-                            onClick={checkOut}
-                            className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
-                            Check Out
-                        </button>
-                        <button
-                            disabled={book.reserved}
-                            onClick={reserve}
-                            className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
-                            Reserve
-                        </button>
-                    </span>
+                    : <span></span>
+                }
+                {!book.borrowed && !book.reserved
+                    ? <button
+                        onClick={checkOut}
+                        className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                        Check Out
+                    </button>
+                    : <span></span>
+                }
+                {!book.reserved
+                    ? <button
+                        onClick={reserve}
+                        className='hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-base'>
+                        Reserve
+                    </button>
+                    : <span></span>
                 }
             </Modal.Footer>
         </Modal>
