@@ -59,5 +59,11 @@ The user authentication, sign-up, and sign-in is handled by Clerk for security p
 14. ```/makeadmin/:id```: Updates a user's role to be admin in Clerk.
 
 ## Tests
-The tests included 
+You can run the tests with
+```
+cd server
+npm run test
+```
+There are 4 server tests included that test a helper function called getUserActionQuery. It returns the queries needed for the books table and the users table based on whether the user is checking in, checking out, reserving, or unreserving the book.
+
 
