@@ -1,6 +1,13 @@
 
 # Welcome to Nat's Public Library
 
+![ezgif-5-7a68553207](https://github.com/NattyNgrn/libraryapp/assets/132034444/560417fe-8b18-42f9-9d68-6e3bbe64a872)
+
+![catalogue-gif](https://github.com/NattyNgrn/libraryapp/assets/132034444/4b019438-cb7d-4510-9360-dba929d7d577)
+
+![adding-updating](https://github.com/NattyNgrn/libraryapp/assets/132034444/c70c8b01-8de1-4461-a09a-76ba729798be)
+
+![account-thing](https://github.com/NattyNgrn/libraryapp/assets/132034444/12d40ead-b6ce-4949-95de-c228ec4163aa)
 
 ## Initialization and Setup
 First setup the server
