@@ -20,7 +20,11 @@
 - An admin can add, update, and delete books from the library. (a book will only be added/updated if the date is put in date (xx/xx/xxxx) format)
 
 ## Initialization and Setup
-First set up the database by writing the pg_dump found in mydb.sql into a database on port 5432 called LibraryManagement. Set up a user called me with with the password "password"  and full access to both tables if the dump doesn't.
+First create a database called LibraryManagement with postgresql. Then by put the pg_dump found in mydb.sql into LibraryManagement on port 5432. Set up a user called me with with the password "password".
+If you want to use your own user you can change it at line 4 and line 8 of server/helpers.js
+```
+psql -U me -d LibraryManagement < mydb.sql
+```
 
 Then setup the server
 Create a .env file in the server folder.
