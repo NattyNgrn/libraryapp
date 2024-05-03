@@ -63,16 +63,15 @@ The user authentication, sign-up, and sign-in is handled by Clerk for security p
 - tailwind - for inline css styling
 
 ### Backend
-- body-parser
-- cloudinary
-- cors
+- body-parser - to parse request body
+- cors - to make external requests to API's
 - dotenv - to access the .env files for clerk api secrets
 - express - as the routing framework
 - nodemon - for starting up the node backend
 - pg - for connecting to postgresql database
 
 ## Database
-The database dump is located in mydb.sql for detail on how to set it up. It contains two tables books and users. 
+The database dump is located in mydb.sql and instructions on setup are in the initialization section. The LibraryManagement databse contains two tables books and users.
 
 The books table has 9 columns. id, title, author, date, description are self explanatory. Borrowed is true or false based on whether the book has been checked out. Reserved is true or false based on if the book was checked out. userreserved contains the user id of the last user who reserved the book.
 
