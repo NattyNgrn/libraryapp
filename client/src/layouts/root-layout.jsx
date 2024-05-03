@@ -19,10 +19,6 @@ export default function RootLayout() {
                 <SignedIn>
                     <Navbar />
                 </SignedIn>
-                <SignedOut>
-                    <SignUpButton />
-                    <SignInButton />
-                </SignedOut>
                 </div>
             </header>
             <main>

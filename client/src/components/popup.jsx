@@ -68,6 +68,7 @@ function Popup({book, personalMode, adminMode, showPopup, setShowPopup, setShowU
                 <div className="space-y-6">
                     <h3>Author: {book.author}</h3>
                     <h3>Date Published: {formatDate(book.date)}</h3>
+                    <h3>Description: {book.description}</h3>
                     <h3>{getBookStatus()}</h3>
                 </div>
             </Modal.Body>

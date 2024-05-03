@@ -40,18 +40,18 @@ export default function Catalogue({books, personalMode, adminMode}) {
     }
 
     return (
-        <div className="pt-5">
-            <form className="flex items-center">
+        <div className="pt-5 flex-shrink">
+            <form className="flex items-center flex-shrink">
                 <input
                     type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="m-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search by title"
                     value={searchTitle}
                     onChange={(e) => setSearchTitle(e.target.value)}
                 />
                 <input
                     type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="m-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search by Author"
                     value={searchAuthor}
                     onChange={(e) => setSearchAuthor(e.target.value)}
@@ -62,8 +62,8 @@ export default function Catalogue({books, personalMode, adminMode}) {
                         : <button 
                             onClick={(e) => e.preventDefault() || setFilterAvailable(!filterAvailable)}
                             className={filterAvailable
-                                ? "hover:bg-red-500 p-px px-2 rounded mx-2 bg-red-500 text-xlg"
-                                : "hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg"}>
+                                ? "hover:bg-rose-400 p-px px-2 rounded mx-2 bg-rose-400 text-xlg"
+                                : "hover:bg-rose-400 p-px px-2 rounded mx-2 bg-white text-xlg"}>
                             Available
                         </button>
                 }
@@ -71,7 +71,7 @@ export default function Catalogue({books, personalMode, adminMode}) {
                     adminMode
                         ? <button 
                             onClick={(e) => e.preventDefault() || setShowAddBookPopup(true)}
-                            className="hover:bg-red-500 p-px px-2 rounded mx-2 bg-white text-xlg">
+                            className="hover:bg-rose-400 p-px px-2 rounded mx-2 bg-white text-xlg">
                             Add Book
                         </button>
                         : <span></span>

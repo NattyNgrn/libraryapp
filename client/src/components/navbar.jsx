@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
 import * as React from 'react'
 import { useAuth, useUser } from "@clerk/clerk-react"
 import {useNavigate } from "react-router-dom"
@@ -37,9 +37,6 @@ function Navbar(){
                     </ul>
                 </nav>
                 <div className="scale-150 m-4">
-                    <SignedOut>
-                        <SignInButton />
-                    </SignedOut>
                     <SignedIn>
                         <UserButton />
                     </SignedIn>

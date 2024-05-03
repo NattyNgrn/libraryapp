@@ -15,6 +15,10 @@ cd client
 npm install
 npm run dev
 ```
+To test with an account with admin access sign in with
+- email - nattylizn@gmail.com
+- password - meowmeow0219
+
 The database is already deployed so don't worry about that :)
 
 ## Dependencies

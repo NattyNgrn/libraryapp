@@ -41,7 +41,7 @@ export default function UpdateBookPopup({book, showUpdateBookPopup, setShowUpdat
                     <div className="flex justify-center mt-4">
                         {//uploading ? <div>Uploading...</div> : null}
                         }
-                        <div><button onClick={updateBook} className="bg-amber-400 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-md">Save</button></div>
+                        <div><button onClick={updateBook} className=" bg-rose-400 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-md">Save</button></div>
                     </div>
                 </div>
             </Modal.Body>

@@ -26,6 +26,6 @@ export default function UploadWidget({setUrl, setUploading}) {
         );
     }, [setUploading, setUrl]);
     return (
-        <button onClick={()=> widgetRef.current.open()} className="bg-amber-400 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-md"> Upload </button>
+        <button onClick={()=> widgetRef.current.open()} className="mt-4 bg-rose-400 hover:bg-rose-600 text-white font-bold py-2 px-4 m-2 rounded-md"> Upload </button>
     );
 }

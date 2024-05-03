@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
+import { SignInButton, SignUpButton, SignedOut, useAuth } from "@clerk/clerk-react";
 
 export default function IndexPage() {
 
@@ -16,8 +16,14 @@ export default function IndexPage() {
     }, [isLoaded, navigate, userId]);
 
     return (
-        <div>
-            <h1>This is the index page</h1>
+        <div className="m-8">
+            <h1 className="text-6xl m-8" >WELCOME TO NATS LIBRARY</h1>
+            <SignedOut>
+                <SignInButton className="hover:bg-rose-400 p-px px-2 rounded mx-2 bg-white text-6xl text-black m-4" />
+                <SignUpButton className="hover:bg-rose-400 p-px px-2 rounded mx-2 bg-white text-6xl text-black m-4" />
+            </SignedOut>
+            
+            
         </div>
     )
 }
