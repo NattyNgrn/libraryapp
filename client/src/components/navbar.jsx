@@ -28,7 +28,7 @@ function Navbar(){
                     <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/Personal">Personal Library</Link></li></button>
                     {
                     user?.publicMetadata?.role === 'admin' &&
-                    <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/Admin">Admin</Link></li></button>
+                    <button className="hover:bg-red-300 p-px px-2 rounded mx-2 bg-red-200 text-2xl"><li><Link to="/Admin">Admin Books</Link></li></button>
                     }
                     {
                     user?.publicMetadata?.role === 'admin' &&

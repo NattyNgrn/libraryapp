@@ -26,7 +26,7 @@ function Personal() {
 
     return (
         <div>
-            <h1>Personal</h1>
+            <h1 className="text-4xl font-bold pt-3">Your Personal Library</h1>
             <Catalogue books={books} personalMode={true} adminMode={false} />
         </div>
     );

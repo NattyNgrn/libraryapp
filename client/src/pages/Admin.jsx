@@ -26,7 +26,7 @@ export default function Admin() {
 
     return (
         <div>
-            <h1>Library Catalogue</h1>
+            <h1 className="text-4xl font-bold pt-3">Catalogue Administrator Mode</h1>
             <Catalogue books={books} personalMode={false} adminMode={true} />
         </div>
     );

@@ -31,7 +31,7 @@ function Home() {
 
     return (
         <div>
-            <h1>Library Catalogue</h1>
+            <h1 className="text-4xl font-bold pt-3">Library Catalogue</h1>
             <Catalogue books={books} personalMode={false} adminMode={false} />
         </div>
     );
